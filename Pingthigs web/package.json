@@ -1,0 +1,20 @@
+{
+  "name": "pingthings-render-app",
+  "version": "1.0.0",
+  "description": "Render-ready PingThings monitoring dashboard",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node --check src/server.js && node --check src/monitorService.js && node --check public/app.js"
+  },
+  "engines": {
+    "node": ">=20 <21"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "sqlite3": "^5.1.7"
+  }
+}
