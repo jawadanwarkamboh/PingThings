@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PingThings Web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">PingThings Cloud</div>
+          <h1>Monitor public devices and services from Render.</h1>
+          <p class="hero-text">
+            A cloud-safe version of PingThings with live status cards, history, manual checks,
+            filtering, and persistent SQLite storage.
+          </p>
+          <div class="hero-note">
+            Private LAN targets like <code>192.168.x.x</code> will not be reachable from Render.
+          </div>
+        </div>
+        <div class="hero-stats" id="summaryCards"></div>
+      </header>
+
+      <section class="toolbar">
+        <div class="toolbar-left">
+          <input id="searchInput" class="search" type="search" placeholder="Search devices or hosts" />
+          <div class="filters" id="filterChips"></div>
+        </div>
+        <button id="addButton" class="primary-button">Add Device</button>
+      </section>
+
+      <section id="emptyState" class="empty-state hidden">
+        <h2>No devices yet</h2>
+        <p>Add your first public host, API endpoint, DNS name, or TCP service to begin monitoring.</p>
+      </section>
+
+      <section id="deviceGrid" class="device-grid"></section>
+    </div>
+
+    <aside id="historyPanel" class="history-panel hidden">
+      <div class="panel-header">
+        <div>
+          <div class="eyebrow">History</div>
+          <h2 id="historyTitle">Device History</h2>
+        </div>
+        <button id="closeHistoryButton" class="ghost-button">Close</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </aside>
+
+    <dialog id="deviceDialog" class="device-dialog">
+      <form id="deviceForm" class="device-form" method="dialog">
+        <div class="panel-header">
+          <div>
+            <div class="eyebrow">Device</div>
+            <h2 id="dialogTitle">Add Device</h2>
+          </div>
+          <button type="button" id="cancelButton" class="ghost-button">Cancel</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Name</span>
+            <input name="name" required />
+          </label>
+
+          <label>
+            <span>Target</span>
+            <input name="target" required placeholder="example.com" />
+          </label>
+
+          <label>
+            <span>Device Type</span>
+            <select name="deviceType" id="deviceTypeSelect"></select>
+          </label>
+
+          <label>
+            <span>Protocol</span>
+            <select name="protocol" id="protocolSelect"></select>
+          </label>
+
+          <label>
+            <span>Port</span>
+            <input name="port" type="number" min="1" max="65535" placeholder="Optional" />
+          </label>
+
+          <label>
+            <span>Path</span>
+            <input name="path" placeholder="/health" />
+          </label>
+
+          <label>
+            <span>Check Interval (sec)</span>
+            <input name="checkIntervalSec" type="number" min="10" max="3600" value="60" required />
+          </label>
+
+          <label class="toggle-row">
+            <span>Active</span>
+            <input name="isActive" type="checkbox" checked />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-button">Save Device</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="deviceCardTemplate">
+      <article class="device-card">
+        <div class="device-card-top">
+          <div>
+            <div class="device-type-badge"></div>
+            <h3 class="device-name"></h3>
+          </div>
+          <div class="status-pill"></div>
+        </div>
+
+        <div class="device-meta"></div>
+
+        <div class="device-metrics">
+          <div>
+            <span class="metric-label">Latency</span>
+            <strong class="latency-value">-</strong>
+          </div>
+          <div>
+            <span class="metric-label">Last check</span>
+            <strong class="last-check-value">Never</strong>
+          </div>
+        </div>
+
+        <p class="status-message"></p>
+
+        <div class="device-actions">
+          <button class="ghost-button history-button">History</button>
+          <button class="ghost-button check-button">Check Now</button>
+          <button class="ghost-button edit-button">Edit</button>
+          <button class="danger-button delete-button">Delete</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+  </html>
